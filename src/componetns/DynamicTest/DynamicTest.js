@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 
 class DynamicTest extends Component {
     state = {
-        AnotherComponent: null
+        AnotherComponent: null,
+        value: ''
     };
 
     loadImage = () => {
-        import('./Image')
+        import('./' + this.state.value)
             .then(AnotherComponent => {
                 console.log(AnotherComponent);
                 this.setState({ AnotherComponent: AnotherComponent.default() });
@@ -20,6 +21,9 @@ class DynamicTest extends Component {
 
     };
 
+    inputHandler = (event) => {
+        this.setState({value: event.target.value});
+    };
 
     render() {
         let component = null;
@@ -35,6 +39,10 @@ class DynamicTest extends Component {
             <div className={'DynamicTest'}>
                 {component}
                 <button onClick={this.loadImage}>Add Image</button>
+                <input
+                    type="text"
+                    placeholder={'Blue or Green or Red'}
+                    onChange={(event) => this.inputHandler(event)}/>
             </div>
 
         );

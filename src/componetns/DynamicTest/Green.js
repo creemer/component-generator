@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Image = () => {
+const Green = () => {
     return (
         <div>
             <div style={{ background: 'lightgreen', width: '250px', height: '100px', margin: 'auto'}}></div>
@@ -9,4 +9,4 @@ const Image = () => {
     );
 };
 
-export default Image;
+export default Green;

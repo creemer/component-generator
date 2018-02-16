@@ -1,39 +1,42 @@
 import React, {Component} from 'react';
-import Loadable from 'react-loadable';
-
-const Loading = (props) => {
-    if (props.error) {
-        return <div>Error!</div>;
-    } else {
-        return null;
-    }
-};
-
-const LoadableComponent = Loadable({
-    loader: () => import('./Image'),
-    loading: Loading
-});
 
 class DynamicTest extends Component {
     state = {
-        loaded: null
+        AnotherComponent: null
     };
 
     loadImage = () => {
-        this.setState({ loaded: <LoadableComponent/> });
-    };
+        import('./Image')
+            .then(AnotherComponent => {
+                console.log(AnotherComponent);
+                this.setState({ AnotherComponent: AnotherComponent.default() });
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    AnotherComponent: <div>NO data recieved!</div>
+                })
+            });
 
-    componentDidMount() {
-        console.log('LoadableComponent', LoadableComponent);
-    }
+    };
 
 
     render() {
+        let component = null;
+        let {AnotherComponent} = this.state;
+
+        if (!AnotherComponent) {
+            component = <div>Loading...</div>;
+        } else {
+            component = AnotherComponent
+        }
+
         return (
             <div className={'DynamicTest'}>
-                {this.state.loaded}
+                {component}
                 <button onClick={this.loadImage}>Add Image</button>
             </div>
+
         );
     }
 }
